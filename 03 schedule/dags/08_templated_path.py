@@ -18,10 +18,10 @@ fetch_events = BashOperator(
     task_id="fetch_events",
     bash_command=(
         "mkdir -p /data/events && "
-        "curl -o /data/events/{{ds}}.json "
+        "curl -o /data/events/{{ds}}.json " #particionamos los datos por fecha
         "http://events_api:5000/events?"
-        "start_date={{ds}}&"
-        "end_date={{next_ds}}"
+        "start_date={{ds}}&" #templated execution date; ds_nodash, execution_date
+        "end_date={{next_ds}}" #templated next execution date; next_execution_date, next_ds_nodash, prev_execution_date, prev_ds y prev_ds_nodash son otros parametros que estan disponibles
     ),
     dag=dag,
 )
