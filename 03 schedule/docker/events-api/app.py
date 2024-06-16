@@ -35,10 +35,11 @@ def _generate_events_for_day(date):
     n_users = random_state.randint(low=50, high=100)
     n_events = random_state.randint(low=200, high=2000)
 
-    # Generate a bunch of users.
+    # Crea una lista de usuarios. Cada usuario se representa como una ip
     fake = Faker()
     users = [fake.ipv4() for _ in range(n_users)]
 
+    #Crea un pandas dataframe con dos columnas/series, una coon los usuarios, y otra con la fecha 
     return pd.DataFrame(
         {
             "user": random_state.choice(users, size=n_events, replace=True),
@@ -46,8 +47,10 @@ def _generate_events_for_day(date):
         }
     )
 
-
+#Aplicacion flask
 app = Flask(__name__)
+
+#Dataset con eventos
 app.config["events"] = _generate_events(end_date=date(year=2019, month=1, day=5))
 
 
@@ -56,14 +59,17 @@ def events():
     start_date = _str_to_datetime(request.args.get("start_date", None))
     end_date = _str_to_datetime(request.args.get("end_date", None))
 
+    #Obtiene el dataset
     events = app.config.get("events")
 
+    #Recupera las entradas del dataset
     if start_date is not None:
         events = events.loc[events["date"] >= start_date]
 
     if end_date is not None:
         events = events.loc[events["date"] < end_date]
 
+    #Crea un json con un diccionario de los eventos
     return jsonify(events.to_dict(orient="records"))
 
 
