@@ -8,9 +8,9 @@ from airflow.operators.python import PythonOperator
 
 dag = DAG(
     dag_id="03_with_end_date",
-    schedule_interval="@daily",
-    start_date=dt.datetime(year=2019, month=1, day=1),
-    end_date=dt.datetime(year=2019, month=1, day=5),
+    schedule_interval="@daily", #es una macro que indica que la ejecución sea diaria; Si ponemos none, no se planificará la ejecución
+    start_date=dt.datetime(year=2019, month=1, day=1), #fecha desde la que se planifica la ejecución
+    end_date=dt.datetime(year=2019, month=1, day=5), #fecha hasta la que se planifica la ejecución
 )
 
 fetch_events = BashOperator(

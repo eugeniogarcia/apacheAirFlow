@@ -8,7 +8,7 @@ from airflow.operators.python import PythonOperator
 
 dag = DAG(
     dag_id="04_time_delta",
-    schedule_interval=dt.timedelta(days=3),
+    schedule_interval=dt.timedelta(days=3), #indicamos que queremos ejecutar cada 3 dias; Esto es una mejora con respecto de lo que podemos hacer con el cron
     start_date=dt.datetime(year=2019, month=1, day=1),
     end_date=dt.datetime(year=2019, month=1, day=5),
 )
