@@ -45,9 +45,7 @@ calculate_stats = PythonOperator(
     templates_dict={
         "input_path": "/data/events/{{ds}}.json",
         "output_path": "/data/stats/{{ds}}.csv",
-    },
-    # Required in Airflow 1.10 to access templates_dict, deprecated in Airflow 2+.
-    # provide_context=True,
+    },# Si los argumentos son parametrizados hay que pasarlos con templates_dict
     dag=dag,
 )
 

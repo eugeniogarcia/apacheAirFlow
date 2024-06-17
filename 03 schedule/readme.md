@@ -57,3 +57,12 @@ para para el conjunto de servicios que hemos arrancado:
 ```ps
 podman-compose down
 ```
+
+finalmente destacar como hemos indicado en el contenedor que implementa el scheduler estamos indicando la ruta en el _host_ de las dags. Notese como indicamos que se use la ruta como lectura/escritura:
+
+```yaml
+    volumes:
+      - ./dags:/opt/airflow/dags:rw,z
+      - logs:/opt/airflow/logs
+      - data:/data
+```

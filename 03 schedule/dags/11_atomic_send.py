@@ -12,7 +12,7 @@ dag = DAG(
     schedule_interval="@daily",
     start_date=dt.datetime(year=2019, month=1, day=1),
     end_date=dt.datetime(year=2019, month=1, day=5),
-    catchup=True,
+    catchup=True, # Por defecto se hace catchup true; con catchup true el DAG se ejecutará de forma retroactiva desde el start_date, aunque la fecha sea pasada
 )
 
 fetch_events = BashOperator(
@@ -60,7 +60,7 @@ def _send_stats(email, **context):
     stats = pd.read_csv(context["templates_dict"]["stats_path"])
     email_stats(stats, email=email)
 
-
+# Para que el calculo de estadisticas sea atomico, separamos del calculo el envio del email. Asi en caso de que falle el envio de email no se repite el calculo de estadisticas
 send_stats = PythonOperator(
     task_id="send_stats",
     python_callable=_send_stats,
@@ -69,4 +69,4 @@ send_stats = PythonOperator(
     dag=dag,
 )
 
-fetch_events >> calculate_stats >> send_stats
+fetch_events >> calculate_stats >> send_stats 

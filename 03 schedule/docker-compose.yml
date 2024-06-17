@@ -56,7 +56,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags:rw,z
       - logs:/opt/airflow/logs
       - data:/data
     environment: *airflow_environment
