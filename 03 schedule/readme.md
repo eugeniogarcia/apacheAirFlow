@@ -66,3 +66,28 @@ finalmente destacar como hemos indicado en el contenedor que implementa el sched
       - logs:/opt/airflow/logs
       - data:/data
 ```
+
+#### Explicación sobre build
+
+En el docker-compose hay una serie de tags `build`. Con estos tags lo que estamos haciendo es construir la imagen que vamos a usar. Por ejemplo:
+
+```yaml
+webserver:
+  build:
+    context: docker/airflow-data
+    args:
+      AIRFLOW_BASE_IMAGE: *airflow_image
+  image: localhost/mi-airflow:latest
+```
+
+con esto indicamos que se use la imagen `localhost/mi-airflow:latest`, y que si esta imagen no esta en el repositorio construyamos una. Con `context` indicamos la ruta donde estará el dockerfile para construir la imagen. con `args` lo que especificamos son parametros que pasaremos al dockerfile. Este ejemplo podemos ver en el docker file:
+
+```txt
+ARG AIRFLOW_BASE_IMAGE="apache/airflow:2.0.0-python3.8"
+FROM ${AIRFLOW_BASE_IMAGE}
+
+USER root
+RUN mkdir -p /data && chown airflow /data
+
+USER airflow
+```

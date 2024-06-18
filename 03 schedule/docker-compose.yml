@@ -22,7 +22,7 @@ services:
       - "5432:5432"
   init:
     build:
-      context: podman/airflow-data
+      context: ./docker/airflow-data
       args:
         AIRFLOW_BASE_IMAGE: *airflow_image
     image: localhost/mi-airflow:latest
@@ -33,7 +33,7 @@ services:
     command: -c 'airflow db upgrade && sleep 5 && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email egsmartin@gmail.com'
   webserver:
     build:
-      context: podman/airflow-data
+      context: ./docker/airflow-data
       args:
         AIRFLOW_BASE_IMAGE: *airflow_image
     image: localhost/mi-airflow:latest
@@ -48,7 +48,7 @@ services:
     command: webserver
   scheduler:
     build:
-      context: podman/airflow-data
+      context: ./docker/airflow-data
       args:
         AIRFLOW_BASE_IMAGE: *airflow_image
     image: localhost/mi-airflow:latest
@@ -62,7 +62,7 @@ services:
     environment: *airflow_environment
     command: scheduler
   events_api:
-    build: ./podman/events-api
+    build: ./docker/events-api
     image: localhost/eventos:latest
     ports:
       - "5000:5000"
