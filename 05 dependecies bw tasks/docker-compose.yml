@@ -21,14 +21,14 @@ services:
     ports:
       - "5432:5432"
   init:
-    image: *airflow_image
+    image: localhost/mi-airflow:latest
     depends_on:
       - postgres
     environment: *airflow_environment
     entrypoint: /bin/bash
-    command: -c 'airflow db upgrade && sleep 5 && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email admin@example.org'
+    command: -c 'airflow db upgrade && sleep 5 && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email egsmartin@gmail.com'
   webserver:
-    image: *airflow_image
+    image: localhost/mi-airflow:latest
     restart: always
     depends_on:
       - postgres
@@ -39,7 +39,7 @@ services:
     environment: *airflow_environment
     command: webserver
   scheduler:
-    image: *airflow_image
+    image: localhost/mi-airflow:latest
     restart: always
     depends_on:
       - postgres
