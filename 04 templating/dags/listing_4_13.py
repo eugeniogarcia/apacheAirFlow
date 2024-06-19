@@ -22,7 +22,7 @@ def _get_data(year, month, day, hour, output_path, **_):
 get_data = PythonOperator(
     task_id="get_data",
     python_callable=_get_data,
-    op_kwargs={
+    op_kwargs={ # Podemos pasar argumentos adicionales a los que proporciona el propio runtime con el parametro op_kwargs - se pasa un diccionario, como en este ejemplo -, o con el parametro op_args - se pasa una lista de parametros que se asignan en orden; Como podemos pasar strings, podemos usar jinga para formatearlos, como se demuestra en el ejemplo 
         "year": "{{ execution_date.year }}",
         "month": "{{ execution_date.month }}",
         "day": "{{ execution_date.day }}",

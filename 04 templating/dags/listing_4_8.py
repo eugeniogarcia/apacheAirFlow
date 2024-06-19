@@ -9,14 +9,11 @@ dag = DAG(
 )
 
 
-def _print_context(**context):
+def _print_context(**context): # Imprimimos todos los parametros que estan disponibles en el run time
+    print(context)
     start = context["execution_date"]
     end = context["next_execution_date"]
     print(f"Start: {start}, end: {end}")
-
-
-# Prints e.g.:
-# Start: 2019-07-13T14:00:00+00:00, end: 2019-07-13T15:00:00+00:00
 
 
 print_context = PythonOperator(

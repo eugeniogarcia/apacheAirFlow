@@ -20,5 +20,5 @@ def _get_data(execution_date):
     output_path = "/tmp/wikipageviews.gz"
     request.urlretrieve(url, output_path)
 
-
+#En el python operator lo que pasamos como argumento es una función, no un string; Esto significa que el jinja template no tiene efecto como si sucedía en el bashoperator; Lo que tendremos que hacer es en la logica de la propia funcion tomar los parametros del runtime y formatear la string
 get_data = PythonOperator(task_id="get_data", python_callable=_get_data, dag=dag)
