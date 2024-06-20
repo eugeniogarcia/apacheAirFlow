@@ -40,7 +40,7 @@ services:
     build:
       context: docker
       args:
-        AIRFLOW_BASE_IMAGE: apache/airflow:2.0.0-python3.8
+        AIRFLOW_BASE_IMAGE: *airflow_image
     image: localhost/mi-airflow:latest
     depends_on:
       - postgres
@@ -52,7 +52,7 @@ services:
     build:
       context: docker
       args:
-        AIRFLOW_BASE_IMAGE: apache/airflow:2.0.0-python3.8
+        AIRFLOW_BASE_IMAGE: *airflow_image
     image: localhost/mi-airflow:latest
     restart: always
     depends_on:
@@ -68,7 +68,7 @@ services:
     build:
       context: docker
       args:
-        AIRFLOW_BASE_IMAGE: apache/airflow:2.0.0-python3.8
+        AIRFLOW_BASE_IMAGE: *airflow_image
     image: localhost/mi-airflow:latest
     restart: always
     depends_on:

@@ -91,3 +91,48 @@ RUN mkdir -p /data && chown airflow /data
 
 USER airflow
 ```
+
+#### Explicación sobre variables de entorno
+
+En el archivo compose declaramos una serie de variables de entorno en las que se configuran diferentes aspectos de Airflow:
+
+```yaml
+# ====================================== AIRFLOW ENVIRONMENT VARIABLES =======================================
+x-environment: &airflow_environment
+  - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+  - AIRFLOW__CORE__FERNET_KEY=YlCImzjge_TeZc7jPJ7Jz2pgOtb4yTssA1pVyqIADWg=
+  - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
+  - AIRFLOW__CORE__LOAD_EXAMPLES=False
+  - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql://airflow:airflow@postgres:5432/airflow
+  - AIRFLOW__CORE__STORE_DAG_CODE=True
+  - AIRFLOW__CORE__STORE_SERIALIZED_DAGS=True
+  - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
+  - AIRFLOW_CONN_MY_POSTGRES=postgresql://airflow:airflow@wiki_results:5432/airflow
+
+x-airflow-image: &airflow_image apache/airflow:2.0.0-python3.8
+# ====================================== /AIRFLOW ENVIRONMENT VARIABLES ======================================
+```
+
+destacar:
+
+- Variables donde configuramos que el metadato de Airflow sea postgress - en lugar de sqllite, que es el dedefto -, y más concretamente la conexión `postgresql://airflow:airflow@postgres:5432/airflow`
+- Variable donde creamos una conexión a Postgress, al Postgress donde alojamos los datos de la wikipedia - `AIRFLOW_CONN_MY_POSTGRES` -, y que referenciaremos desde el operador `PostgresOperator` que tenemos en el `listing_4_20`
+
+En los servicios que creamos hacemos referencia a estas variables de entorno. Por ejemplo, en el comando de inicialización de Airflow - que ejecutamos una vez la imagen de postgress esta corriendo:
+
+```yaml
+
+  init:
+    build:
+      context: docker
+      args:
+        AIRFLOW_BASE_IMAGE: *airflow_image
+    image: localhost/mi-airflow:latest
+    depends_on:
+      - postgres
+    environment: *airflow_environment
+    entrypoint: /bin/bash
+    command: -c 'airflow db init && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email egsmartin@gmail.com'
+```
+
+hacemos referencia a las variables con el puntero `*airflow_environment`
