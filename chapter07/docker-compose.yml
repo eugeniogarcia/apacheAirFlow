@@ -2,7 +2,7 @@ version: "3.7"
 services:
   airflow:
     build: ../../docker
-    image: manning-airflow:latest
+    image: localhost/mi-airflow:latest
     ports:
       - "8080:8080"
     networks:
