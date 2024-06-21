@@ -36,7 +36,7 @@ with DAG(
     def deploy_model(model_id: str):
         print(f"Deploying model {model_id}")
 
-    model_id = train_model()
+    model_id = train_model() # Paso 1. model_id es una tarea PythonOperator que ejecuta este callable
     deploy_model(model_id)
 
-    join_datasets >> model_id
+    join_datasets >> model_id # Paso 2. model_id, depende de que termine join_datasets

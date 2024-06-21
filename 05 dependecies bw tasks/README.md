@@ -11,6 +11,9 @@ This code example contains the following DAGs:
 - 03_branch_in_dag.py - Branching within the DAG.
 - 06_branch_in_dag.py - Condition within the DAG.
 - 07_trigger_rules.py - DAG illustrating several trigger rules.
+- 09_xcoms.py y 10_xcoms_template.py - Demuestra como usar XCom
+- 12_taskflow.py - Demuestra como definir una tarea PythonOperator simplemente anotando una funcion; La definición del DAG se hace llamando a las funciones python
+- 13_taskflow_full.py - Demuestra como usar los dos estilos de definición de las tareas en el dag, con anotaciones y operadores explicitos, para construir un DAG 
 
 ## Usage
 
