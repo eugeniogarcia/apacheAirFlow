@@ -6,8 +6,17 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 
 ERP_CHANGE_DATE = airflow.utils.dates.days_ago(1)
 
+'''
+Tenemos dos logicas de negocio que queremos implementar en un determinado paso de la DAG. Por ejemplo, supongamos que a la hora de limpiar datos, los registros que nos descargamos tienen dos formatos diferentes dependiendo de la fecha en la que fueron generados.
 
-def _pick_erp_system(**context):
+Con el enfoque de este ejemplo tenemos dos tareas con cada una de las lógicas, y habrá una tarea previa de branching que decidirá por que rama hacer la ejecución. Hay una tarea nueva en la DAG, que usa un BranchPythonOperator y que tiene como misión devolver el id de la tarea que tiene que ejecutarse a continuación.
+
+También es necesario cambiar la trigger rule por defecto de la tarea que se ejecuta después del limpiado de datos, para que sepa que no han de ejecutarse las dos tareas previas, sino solo una de ellas.
+
+Visualmente veremos porque ruta se ejecuto la DAG.
+'''
+
+def _pick_erp_system(**context): # Paso 2. Esta funcion se usa con el BranchOperator - ver más abajo; Retorna el id de una tarea, el id de la tarea que tiene que ejecutarse a continuación
     if context["execution_date"] < ERP_CHANGE_DATE:
         return "fetch_sales_old"
     else:
@@ -37,7 +46,7 @@ with DAG(
 ) as dag:
     start = DummyOperator(task_id="start")
 
-    pick_erp_system = BranchPythonOperator(
+    pick_erp_system = BranchPythonOperator( # Paso 1. Usamos un branch operator. Este operador devuelve el id de la tarea que tiene que ejecutarse a continuación.
         task_id="pick_erp_system", python_callable=_pick_erp_system
     )
 
@@ -61,7 +70,7 @@ with DAG(
     # Using the wrong trigger rule ("all_success") results in tasks being skipped downstream.
     # join_datasets = DummyOperator(task_id="join_datasets")
 
-    join_datasets = DummyOperator(task_id="join_datasets", trigger_rule="none_failed")
+    join_datasets = DummyOperator(task_id="join_datasets", trigger_rule="none_failed") # Paso 3. Esta tarea se dispara cuando alguna de las tareas previas se han ejecutado sin fallos; por defacto la trigger rule es all_success, lo que significa que todasd las tareas previas se han tenido que ejecutar satisfactoriamente
     train_model = DummyOperator(task_id="train_model")
     deploy_model = DummyOperator(task_id="deploy_model")
 

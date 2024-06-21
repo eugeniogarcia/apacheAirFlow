@@ -6,8 +6,15 @@ from airflow.operators.python import PythonOperator
 
 ERP_CHANGE_DATE = airflow.utils.dates.days_ago(1)
 
+'''
+Tenemos dos logicas de negocio que queremos implementar en un determinado paso de la DAG. Por ejemplo, supongamos que a la hora de limpiar datos, los registros que nos descargamos tienen dos formatos diferentes dependiendo de la fecha en la que fueron generados.
 
-def _fetch_sales(**context):
+Con el enfoque de este ejemplo, las dos logicas estarían enlatadas en el propio paso. Así pues nuestra tarea "clean_sales" es una, se ejecuta siempre, y "dentro de la lógica", se ejecuta una u otra funcionalidad dependiendo en la fecha de procesamiento.
+
+Visualmente no sabemos si se ejecuto una u otra logica, tendremos que mirar los logs.
+'''
+
+def _fetch_sales(**context): #La propia tarea tiene embebidas dos logicas diferentes. El branching esta en la propia funcion (graficamente no se aprecia que haya dos logicas de negocio)
     if context["execution_date"] < ERP_CHANGE_DATE:
         _fetch_sales_old(**context)
     else:
@@ -22,7 +29,7 @@ def _fetch_sales_new(**context):
     print("Fetching sales data (NEW)...")
 
 
-def _clean_sales(**context):
+def _clean_sales(**context): #La propia tarea tiene embebidas dos logicas diferentes. El branching esta en la propia funcion
     if context["execution_date"] < airflow.utils.dates.days_ago(1):
         _clean_sales_old(**context)
     else:
