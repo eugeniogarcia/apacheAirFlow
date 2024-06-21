@@ -70,14 +70,14 @@ with DAG(
     # Using the wrong trigger rule ("all_success") results in tasks being skipped downstream.
     # join_datasets = DummyOperator(task_id="join_datasets")
 
-    join_datasets = DummyOperator(task_id="join_datasets", trigger_rule="none_failed") # Paso 3. Esta tarea se dispara cuando alguna de las tareas previas se han ejecutado sin fallos; por defacto la trigger rule es all_success, lo que significa que todasd las tareas previas se han tenido que ejecutar satisfactoriamente
+    join_datasets = DummyOperator(task_id="join_datasets", trigger_rule="none_failed") # Paso 3. Esta tarea se dispara cuando todaslas tareas previas se han ejecutado sin fallos (es decir, en estado success o skipped); por defacto la trigger rule es all_success, lo que significa que todas las tareas previas se han tenido que ejecutar (es decir, todas las tareas previas tienen que estar en estado success)
     train_model = DummyOperator(task_id="train_model")
     deploy_model = DummyOperator(task_id="deploy_model")
 
     start >> [pick_erp_system, fetch_weather]
-    pick_erp_system >> [fetch_sales_old, fetch_sales_new]
+    pick_erp_system >> [fetch_sales_old, fetch_sales_new] # Paso 4. Despues de la tarea de branching se incluyen todas las tareas que pueden llegar a ejecutarse
     fetch_sales_old >> clean_sales_old
     fetch_sales_new >> clean_sales_new
     fetch_weather >> clean_weather
-    [clean_sales_old, clean_sales_new, clean_weather] >> join_datasets
+    [clean_sales_old, clean_sales_new, clean_weather] >> join_datasets # Paso 5. En la tarea join_datasets tendremos que cambiar la trigger_rule para indicar que se puede ejecutar si las previas estan skipped o succed - ver Paso 3
     join_datasets >> train_model >> deploy_model
