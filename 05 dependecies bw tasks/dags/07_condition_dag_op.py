@@ -40,7 +40,7 @@ with DAG(
     join_datasets = DummyOperator(task_id="join_datasets")
     train_model = DummyOperator(task_id="train_model")
 
-    latest_only = LatestOnlyOperator(task_id="latest_only", dag=dag)
+    latest_only = LatestOnlyOperator(task_id="latest_only", dag=dag) # En este caso usamos un operador "de fabrica" que verifica que se trate de la ultima ejecución
 
     deploy_model = DummyOperator(task_id="deploy_model")
 

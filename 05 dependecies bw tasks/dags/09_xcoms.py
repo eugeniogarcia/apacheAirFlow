@@ -9,11 +9,11 @@ from airflow.operators.python import PythonOperator
 
 def _train_model(**context):
     model_id = str(uuid.uuid4())
-    context["task_instance"].xcom_push(key="model_id", value=model_id)
+    context["task_instance"].xcom_push(key="model_id", value=model_id) #guardamos en el XCOM. Esto registrara para las tarea y fecha de ejecución, este key pair
 
 
 def _deploy_model(**context):
-    model_id = context["task_instance"].xcom_pull(
+    model_id = context["task_instance"].xcom_pull( #recuperamos del XCOM el key pair que se ha generado en la tarea que especifiquemos. También se puede especificar el DAG en lugar de la tarea. Sino indicamos la fecha se toma por defecto la fecha actual de ejecución
         task_ids="train_model", key="model_id"
     )
     print(f"Deploying model {model_id}")
