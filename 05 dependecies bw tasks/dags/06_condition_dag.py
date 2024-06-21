@@ -8,6 +8,9 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 
 ERP_CHANGE_DATE = airflow.utils.dates.days_ago(1)
 
+'''
+Se demuestra como implementar una ejecucion condicional
+'''
 
 def _pick_erp_system(**context):
     if context["execution_date"] < ERP_CHANGE_DATE:
@@ -21,6 +24,7 @@ def _latest_only(**context):
     left_window = context["dag"].following_schedule(context["execution_date"])
     right_window = context["dag"].following_schedule(left_window)
 
+    # Al lanzar la excepción AirflowSkipException, la DAG marcará la tarea como skipped
     if not left_window < now <= right_window:
         raise AirflowSkipException()
 
@@ -61,5 +65,5 @@ with DAG(
     [clean_sales_old, clean_sales_new] >> join_erp
     fetch_weather >> clean_weather
     [join_erp, clean_weather] >> join_datasets
-    join_datasets >> train_model >> deploy_model
-    latest_only >> deploy_model
+    join_datasets >> train_model >> deploy_model # Notese como estamos declarando que deploy_model se tiene que ejecutar cuando train_model se ejecute satisfactoriamente y ...
+    latest_only >> deploy_model # ... cuando latest_only sea tambien satisfactoria
