@@ -7,7 +7,7 @@ set -euxo pipefail
 
 function create_user_and_database() {
 	local database=$1
-	echo "Creando el usuario '$database' con la base de datos '$database'."
+	echo "Creando el usuario '$database' con la  base de datos '$database'."
 	psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
     CREATE USER $database WITH PASSWORD '$database';
     CREATE DATABASE $database;
