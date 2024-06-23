@@ -13,8 +13,9 @@ dag = DAG(
 
 create_metrics = DummyOperator(task_id="create_metrics", dag=dag)
 
+# Interesante. Tenemos un loop, en cada iteracción creamos una parte de la DAG final; La DAG sera la composición de todas ellas; create_metrics es la misma instancia en la cuatro interacciones del loop
 for supermarket_id in [1, 2, 3, 4]:
-    wait = FileSensor(
+    wait = FileSensor( # Un sensor es operador que hace pooling hasta que la condición se cumple; Este este caso esperamos a que se deposite un archivo en la  ruta
         task_id=f"wait_for_supermarket_{supermarket_id}",
         filepath=f"/data/supermarket{supermarket_id}/data.csv",
         dag=dag,

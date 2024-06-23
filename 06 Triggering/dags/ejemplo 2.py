@@ -24,11 +24,12 @@ def _wait_for_supermarket(supermarket_id_):
 
 
 for supermarket_id in range(1, 5):
+    # En este caso usamo un PythonSensor. Se trata de un operador que nos permite especificar un callable que ha de retornar un booleano
     wait = PythonSensor(
         task_id=f"wait_for_supermarket_{supermarket_id}",
         python_callable=_wait_for_supermarket,
         op_kwargs={"supermarket_id_": f"supermarket{supermarket_id}"},
-        timeout=600,
+        timeout=600, # Con el timeout indicamos el máximo tiempo que el sensor va a ejecutarse
         dag=dag,
     )
     copy = DummyOperator(task_id=f"copy_to_raw_supermarket_{supermarket_id}", dag=dag)

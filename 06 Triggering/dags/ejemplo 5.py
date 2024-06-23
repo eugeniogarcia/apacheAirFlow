@@ -25,26 +25,30 @@ dag4 = DAG(
     schedule_interval=None,
 )
 
+#DAGs 1, 2 y 3
 DummyOperator(task_id="etl", dag=dag1)
 DummyOperator(task_id="etl", dag=dag2)
 DummyOperator(task_id="etl", dag=dag3)
+
+#DAG 4
+#Tenemos una Sensores que esperan a que se termine una tarea en otro DAG
 [
     ExternalTaskSensor(
         task_id="wait_for_etl_dag1",
-        external_dag_id="figure_6_19_dag_1",
-        external_task_id="etl",
+        external_dag_id="figure_6_19_dag_1", # hace referencia al DAG 1
+        external_task_id="etl", # hace referencia a una tarea dentro de ese DAG
         dag=dag4,
     ),
     ExternalTaskSensor(
         task_id="wait_for_etl_dag2",
-        external_dag_id="figure_6_19_dag_2",
-        external_task_id="etl",
+        external_dag_id="figure_6_19_dag_2", # hace referencia al DAG 2
+        external_task_id="etl", # hace referencia a una tarea dentro de ese DAG
         dag=dag4,
     ),
     ExternalTaskSensor(
         task_id="wait_for_etl_dag3",
-        external_dag_id="figure_6_19_dag_3",
-        external_task_id="etl",
+        external_dag_id="figure_6_19_dag_3", # hace referencia al DAG 3
+        external_task_id="etl", # hace referencia a una tarea dentro de ese DAG
         dag=dag4,
     ),
 ] >> PythonOperator(task_id="report", dag=dag4, python_callable=lambda: print("hello"))
