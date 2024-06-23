@@ -10,8 +10,8 @@ from minio import Minio
 
 dag = DAG(
     dag_id="chapter7_insideairbnb",
-    start_date=datetime(2015, 4, 5),
-    end_date=datetime(2019, 12, 7),
+    start_date=datetime(2023, 6, 5),
+    end_date=datetime(2024, 4, 1),
     schedule_interval="@monthly",
 )
 

@@ -10,7 +10,7 @@ x-environment: &airflow_environment
   - AIRFLOW__CORE__STORE_DAG_CODE=True
   - AIRFLOW__CORE__STORE_SERIALIZED_DAGS=True
   - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
-  - AIRFLOW_CONN_INSIDE_AIRBNB=postgres://insideairbnb:insideairbnb@insideairbnb:5432/insideairbnb
+  - AIRFLOW_CONN_INSIDE_AIRBNB=postgresql://insideairbnb:insideairbnb@insideairbnb:5432/insideairbnb
   - AIRFLOW_CONN_LOCALS3=s3://secretaccess:secretkey@?host=locals3:9000
 
 x-airflow-image: &airflow_image localhost/minio/mi-airflow:latest
