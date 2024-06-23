@@ -68,6 +68,10 @@ services:
       context: insideairbnb/insideairbnb/
     ports:
       - "5433:5432"
+    environment:
+      - POSTGRES_USER=insideairbnb
+      - POSTGRES_PASSWORD=insideairbnb
+      - POSTGRES_DB=insideairbnb
 
   locals3:
     image: minio/minio:RELEASE.2020-01-03T19-12-21Z
