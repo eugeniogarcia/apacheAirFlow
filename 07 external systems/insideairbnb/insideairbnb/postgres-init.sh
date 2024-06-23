@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS listings(
   availability_365               INTEGER,
   number_of_reviews_ltm          INTEGER,
   license                        VARCHAR(100),
-  xxxx1                        VARCHAR(100)
+  download_date                  DATE NOT NULL
 );
 EOSQL
 
