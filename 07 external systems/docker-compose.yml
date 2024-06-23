@@ -63,6 +63,7 @@ services:
     command: scheduler
 
   insideairbnb:
+    image: localhost/insideairbnb:latest 
     build:
       context: insideairbnb/insideairbnb/
     ports:
