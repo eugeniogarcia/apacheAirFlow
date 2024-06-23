@@ -32,7 +32,7 @@ services:
       - postgres
     environment: *airflow_environment
     entrypoint: /bin/bash
-    command: -c 'airflow db init && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email admin@example.org'
+    command: -c 'airflow db init && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email egsmartin@gmai.com'
 
   webserver:
     image: *airflow_image
@@ -47,10 +47,7 @@ services:
     command: webserver
 
   scheduler:
-    build:
-      context: airflow
-      args:
-        AIRFLOW_BASE_IMAGE: *airflow_image
+    image: *airflow_image
     restart: always
     depends_on:
       - postgres
