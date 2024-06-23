@@ -19,7 +19,7 @@ x-airflow-image: &airflow_image apache/airflow:2.0.0-python3.8
 # ====================================== /AIRFLOW ENVIRONMENT VARIABLES ======================================
 services:
   postgres:
-    image: postgres:12-alpine
+    image: postgres:12.1-alpine
     container_name: chapter10_docker_postgres_1
     environment:
       - POSTGRES_USER=airflow

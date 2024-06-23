@@ -11,6 +11,7 @@ from PIL import Image
 from chalice import Chalice, Response
 from sagemaker.amazon.common import numpy_to_record_serializer
 
+#Aplicación Chalice
 app = Chalice(app_name="number-classifier")
 
 

@@ -18,7 +18,7 @@ x-airflow-image: &airflow_image localhost/mi-airflow:latest
 
 services:
   postgres:
-    image: postgres:12-alpine
+    image: postgres:12.1-alpine
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
@@ -32,8 +32,7 @@ services:
       - postgres
     environment: *airflow_environment
     entrypoint: /bin/bash
-    command: -c 'airflow db init && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email egsmartin@gmai.com'
-
+    command: -c 'airflow db upgrade && sleep 5 && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email egsmartin@gmail.com'
   webserver:
     image: *airflow_image
     restart: always

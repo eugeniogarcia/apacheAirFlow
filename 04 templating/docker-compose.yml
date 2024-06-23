@@ -17,7 +17,7 @@ x-airflow-image: &airflow_image apache/airflow:2.0.0-python3.8
 
 services:
   postgres:
-    image: postgres:12-alpine
+    image: postgres:12.1-alpine
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
@@ -26,7 +26,7 @@ services:
       - "5432:5432"
 
   wiki_results:
-    image: postgres:12-alpine
+    image: postgres:12.1-alpine
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
