@@ -7,7 +7,7 @@ set -euxo pipefail
 
 function create_user_and_database() {
 	local database=$1
-	echo "Creating user '$database' with database '$database'."
+	echo "Creando el usuario '$database' con la base de datos '$database'."
 	psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
     CREATE USER $database WITH PASSWORD '$database';
     CREATE DATABASE $database;
@@ -16,7 +16,9 @@ EOSQL
 }
 
 # 1. Create databases
+echo "Hacemos create_user_and_database"
 create_user_and_database "insideairbnb"
+echo "Fin create_user_and_database"
 
 # 2. Create table for insideairbnb listings
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" insideairbnb <<-EOSQL
@@ -112,6 +114,8 @@ done
 
 function grant_all() {
 	local database=$1
+  echo "Cambiando el owner del esquema public a '$database'"
+  echo "Asignando permisos al usuario '$database'"
 	psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" $database <<-EOSQL
     ALTER SCHEMA public OWNER TO $database;
     GRANT USAGE ON SCHEMA public TO $database;
@@ -122,6 +126,8 @@ EOSQL
 }
 
 # Somehow the database-specific privileges must be set AFTERWARDS
+echo "Hacemos grant_all"
 grant_all "insideairbnb"
+echo "Fin"
 
 pg_ctl stop
