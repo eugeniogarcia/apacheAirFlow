@@ -26,22 +26,14 @@ services:
     ports:
       - "5432:5432"
   init:
-    build:
-      context: ../chapter03/docker/airflow-data
-      args:
-        AIRFLOW_BASE_IMAGE: *airflow_image
-    image: manning-airflow/airflow-data
+    image: localhost/mi-airflow:latest
     depends_on:
       - postgres
     environment: *airflow_environment
     entrypoint: /bin/bash
-    command: -c 'airflow db upgrade && sleep 5 && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email admin@example.org'
+    command: -c 'airflow db upgrade && sleep 5 && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email egsmartin@gmail.com'
   webserver:
-    build:
-      context: ../chapter03/docker/airflow-data
-      args:
-        AIRFLOW_BASE_IMAGE: *airflow_image
-    image: manning-airflow/airflow-data
+    image: localhost/mi-airflow:latest
     restart: always
     depends_on:
       - postgres
@@ -52,11 +44,7 @@ services:
     environment: *airflow_environment
     command: webserver
   scheduler:
-    build:
-      context: ../chapter03/docker/airflow-data
-      args:
-        AIRFLOW_BASE_IMAGE: *airflow_image
-    image: manning-airflow/airflow-data
+    image: localhost/mi-airflow:latest
     restart: always
     depends_on:
       - postgres
@@ -68,7 +56,7 @@ services:
     command: scheduler
   movielens:
     build: docker/movielens-api
-    image: manning-airflow/movielens-api
+    image: localhost/movielens-api
     ports:
       - "5000:5000"
     environment:
