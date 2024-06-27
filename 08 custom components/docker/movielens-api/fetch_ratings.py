@@ -7,11 +7,12 @@ import zipfile
 import click
 import pandas as pd
 
+#Configura el logging
 logging.basicConfig(
     format="[%(asctime)-15s] %(levelname)s - %(message)s", level=logging.INFO
 )
 
-
+#Usamos click para definir el CLI. Indicamos los argumentos que se esperan, su tipo, si son obligatorios, y el valor por defecto
 @click.command()
 @click.option("--start_date", default="2019-01-01", type=click.DateTime())
 @click.option("--end_date", default="2020-01-01", type=click.DateTime())
@@ -24,9 +25,12 @@ def main(start_date, end_date, output_path):
 
     # Subset to expected range.
     logging.info(f"Filtering for dates {start_date} - {end_date}...")
+    #convierte la serie timestamp en un datetime
     ts_parsed = pd.to_datetime(ratings["timestamp"], unit="s")
+    #nos quedamos con los datos entre las fechas de inicio y fin
     ratings = ratings.loc[(ts_parsed >= start_date) & (ts_parsed < end_date)]
 
+    #Guarda los datos como csv
     logging.info(f"Writing ratings to '{output_path}'...")
     ratings.to_csv(output_path, index=False)
 
