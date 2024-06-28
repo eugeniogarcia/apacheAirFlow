@@ -6,7 +6,7 @@ from airflow.utils.decorators import apply_defaults
 
 from custom.hooks import MovielensHook
 
-
+# Para implementar un operador custom hay que heredar de BaseOperator 
 class MovielensFetchRatingsOperator(BaseOperator):
     """
     Operator that fetches ratings from the Movielens API (introduced in Chapter 8).
@@ -32,7 +32,9 @@ class MovielensFetchRatingsOperator(BaseOperator):
 
     template_fields = ("_start_date", "_end_date", "_output_path")
 
-    @apply_defaults
+    # Pasamos los parametros que sean necesarios para este Operador
+    # Con esta anotación indicamos que queremos que se pasen al operador todos los parámetros por defecto del DAG
+    @apply_defaults 
     def __init__(
         self,
         conn_id,
@@ -42,6 +44,7 @@ class MovielensFetchRatingsOperator(BaseOperator):
         batch_size=1000,
         **kwargs,
     ):
+        
         super(MovielensFetchRatingsOperator, self).__init__(**kwargs)
 
         self._conn_id = conn_id
@@ -51,7 +54,9 @@ class MovielensFetchRatingsOperator(BaseOperator):
         self._batch_size = batch_size
 
     # pylint: disable=unused-argument,missing-docstring
+    # Esta es la implementación del operador
     def execute(self, context):
+        # En el operador podemos usar hooks
         hook = MovielensHook(self._conn_id)
 
         try:

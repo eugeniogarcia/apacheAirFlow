@@ -12,6 +12,7 @@ with DAG(
     end_date=dt.datetime(2019, 1, 10),
     schedule_interval="@daily",
 ) as dag:
+    # Usa nuestro Operador custom
     MovielensFetchRatingsOperator(
         task_id="fetch_ratings",
         conn_id="movielens",
