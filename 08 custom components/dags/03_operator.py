@@ -16,7 +16,7 @@ with DAG(
     MovielensFetchRatingsOperator(
         task_id="fetch_ratings",
         conn_id="movielens",
-        start_date="{{ds}}",
-        end_date="{{next_ds}}",
-        output_path="/data/custom_operator/{{ds}}.json",
+        start_date="{{ds}}", # hemos declarado esta variable como templatizable en el operador
+        end_date="{{next_ds}}", # hemos declarado esta variable como templatizable en el operador
+        output_path="/data/custom_operator/{{ds}}.json", # hemos declarado esta variable como templatizable en el operador
     )

@@ -30,6 +30,7 @@ class MovielensFetchRatingsOperator(BaseOperator):
         mean less requests, but more data transferred per request.
     """
 
+    # con esto indicamos que variables son "templatizables" con el operador
     template_fields = ("_start_date", "_end_date", "_output_path")
 
     # Pasamos los parametros que sean necesarios para este Operador
