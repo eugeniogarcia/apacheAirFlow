@@ -118,6 +118,7 @@ with DAG(
         output_path = templates_dict["output_path"]
 
         ratings = pd.read_json(input_path)
+        #obtiene rankings ordenados por usuario, con más de dos evaluaciones por usuario
         ranking = rank_movies_by_rating(ratings, min_ratings=min_ratings)
 
         # Make sure output directory exists.

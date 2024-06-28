@@ -1,8 +1,8 @@
 import requests
 
-from airflow.hooks.base_hook import BaseHook
+from airflow.hooks.base_hook import BaseHook # crea un hook
 
-
+# Para implementar un hook heredamos de BaseHook 
 class MovielensHook(BaseHook):
     """
     Hook for the MovieLens API.
@@ -25,18 +25,19 @@ class MovielensHook(BaseHook):
 
     def __init__(self, conn_id, retry=3):
         super().__init__()
-        self._conn_id = conn_id
+        self._conn_id = conn_id # guardamos la conexión con AIF
         self._retry = retry
 
         self._session = None
         self._base_url = None
 
+    #Implementa un Contexto
     def __enter__(self):
         return self
-
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
 
+    # Incluimos en el hook un método que retorna la configuración
     def get_conn(self):
         """
         Returns the connection used by the hook for querying data.
@@ -44,12 +45,13 @@ class MovielensHook(BaseHook):
         """
 
         if self._session is None:
-            # Fetch config for the given connection (host, login, etc).
+            # Usamos la conexión para recuperar de la configuración de AIF una configuración. En este caso será una configuración http
             config = self.get_connection(self._conn_id)
 
             if not config.host:
                 raise ValueError(f"No host specified in connection {self._conn_id}")
 
+            #Toma los valores de la configuración o usa un valor por defecto
             schema = config.schema or self.DEFAULT_SCHEMA
             port = config.port or self.DEFAULT_PORT
 
@@ -59,11 +61,13 @@ class MovielensHook(BaseHook):
             # requests to the API.
             self._session = requests.Session()
 
+            # Cacheamos la configuración
             if config.login:
                 self._session.auth = (config.login, config.password)
 
         return self._session, self._base_url
 
+    #cierra el hook
     def close(self):
         """Closes any active session."""
         if self._session:
@@ -71,8 +75,7 @@ class MovielensHook(BaseHook):
         self._session = None
         self._base_url = None
 
-    # API methods:
-
+    # Implementa en el hook un método que nos permite recuperar las reviews
     def get_movies(self):
         """Fetches a list of movies."""
         raise NotImplementedError()
@@ -98,6 +101,7 @@ class MovielensHook(BaseHook):
             mean less requests, but more data transferred per request.
         """
 
+        #Implementa un generator
         yield from self._get_with_pagination(
             endpoint="/ratings",
             params={"start_date": start_date, "end_date": end_date},
@@ -122,6 +126,7 @@ class MovielensHook(BaseHook):
             response.raise_for_status()
             response_json = response.json()
 
+            #Implementa un generator
             yield from response_json["result"]
 
             offset += batch_size

@@ -6,7 +6,10 @@ import os
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
-from custom.hooks import MovielensHook
+'''
+Un hook es una clase que proporciona una serie de métodos de conveniencia que nos permiten interactuar con AIF. En el hook encapsularemos la lógica que queramos reusar una y otra vez
+'''
+from custom.hooks import MovielensHook 
 
 
 with DAG(
@@ -16,7 +19,7 @@ with DAG(
     end_date=dt.datetime(2019, 1, 10),
     schedule_interval="@daily",
 ) as dag:
-
+    
     def _fetch_ratings(conn_id, templates_dict, batch_size=1000, **_):
         logger = logging.getLogger(__name__)
 
@@ -25,6 +28,8 @@ with DAG(
         output_path = templates_dict["output_path"]
 
         logger.info(f"Fetching ratings for {start_date} to {end_date}")
+
+        # Usamos el hook. El hook recibe parametros, en este caso el connection id que hemos configurado en AIF con los parametros de la conexión
         hook = MovielensHook(conn_id=conn_id)
         ratings = list(
             hook.get_ratings(
