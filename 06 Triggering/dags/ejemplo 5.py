@@ -4,6 +4,10 @@ from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.sensors.external_task import ExternalTaskSensor
 
+'''
+Demuestra el uso de un Sensor que espera por la finalización de una tarea en un DAG externo
+'''
+
 dag1 = DAG(
     dag_id="figure_6_19_dag_1",
     start_date=airflow.utils.dates.days_ago(3),

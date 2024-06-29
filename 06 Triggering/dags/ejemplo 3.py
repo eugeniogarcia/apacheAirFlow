@@ -28,7 +28,7 @@ for supermarket_id in range(1, 5):
         python_callable=_wait_for_supermarket,
         op_kwargs={"supermarket_id_": f"supermarket{supermarket_id}"},
         timeout=600, # Con el timeout indicamos el máximo tiempo que el sensor va a ejecutarse; Por defecto son siete dias
-        mode="reschedule", # por defecto el modo es poke; En el modo poke la tarea figura running durante todo el tiempo qu estamos chequeando - ejecuta, chequea, ejecuta, chquea, ... asi hasta que la condicion se cumpla o se agote todo el timeout. Con el modo reschedule la tarea no esta en running todo el tiempo sino solo cuando se hace el chequeo - ejecuta, chequea, reschedulea, ejecuta, cheuquea,... asi hasta que la condicion se cumpla o se agote todo el timeout 
+        mode="reschedule", # por defecto el modo es poke; En el modo poke la tarea figura running durante todo el tiempo que estamos chequeando - ejecuta, chequea, ejecuta, chquea, ... asi hasta que la condicion se cumpla o se agote todo el timeout. Con el modo reschedule la tarea no esta en running todo el tiempo sino solo cuando se hace el chequeo - ejecuta, chequea, reschedulea, ejecuta, cheuquea,... asi hasta que la condicion se cumpla o se agote todo el timeout 
         dag=dag,
     )
     copy = DummyOperator(task_id=f"copy_to_raw_supermarket_{supermarket_id}", dag=dag)

@@ -29,7 +29,7 @@ for supermarket_id in range(1, 5):
         task_id=f"wait_for_supermarket_{supermarket_id}",
         python_callable=_wait_for_supermarket,
         op_kwargs={"supermarket_id_": f"supermarket{supermarket_id}"},
-        timeout=600, # Con el timeout indicamos el máximo tiempo que el sensor va a ejecutarse
+        timeout=600, # Con el timeout indicamos el máximo tiempo que el sensor va a ejecutarse. Por defecto son siete dias
         dag=dag,
     )
     copy = DummyOperator(task_id=f"copy_to_raw_supermarket_{supermarket_id}", dag=dag)

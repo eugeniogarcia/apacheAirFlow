@@ -7,6 +7,8 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sensors.python import PythonSensor
 
 '''
+Demostramos como llamar a un DAG desde otro
+
 Declaramos dos DAGs
 '''
 dag1 = DAG(
@@ -17,7 +19,7 @@ dag1 = DAG(
 dag2 = DAG(
     dag_id="listing_6_04_dag02",
     start_date=airflow.utils.dates.days_ago(3),
-    schedule_interval=None,
+    schedule_interval=None, # este DAG lo vamos a llamar desde el dag1
 )
 
 
@@ -43,7 +45,7 @@ for supermarket_id in range(1, 5):
     # Tarea que dispara el DAG2
     trigger_create_metrics_dag = TriggerDagRunOperator(
         task_id=f"trigger_create_metrics_dag_supermarket_{supermarket_id}",
-        trigger_dag_id="listing_6_04_dag02", # La tarea dispara este DAG, el DAG2
+        trigger_dag_id="listing_6_04_dag02", # Este es el ID del DAG que vamos a arrancar; En este caso se corresponde con el id del DAG2
         dag=dag1, # La tarea esta dentro del DAG1
     )
     wait >> copy >> process >> trigger_create_metrics_dag
