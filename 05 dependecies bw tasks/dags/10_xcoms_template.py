@@ -6,6 +6,9 @@ from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 
+'''
+Demuestra como podemos usar xcom en plantillas de jinja
+'''
 
 def _train_model(**context):
     model_id = str(uuid.uuid4())

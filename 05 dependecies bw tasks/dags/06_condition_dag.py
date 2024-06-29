@@ -9,7 +9,7 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 ERP_CHANGE_DATE = airflow.utils.dates.days_ago(1)
 
 '''
-Se demuestra como implementar una ejecucion condicional
+Se demuestra como implementar una ejecucion condicional. La tarea implementa una logica que lanza una excepción AirflowSkipException cuando queremos que la tarea se skippe. Esto combinado con la regla de triggering nos permite definir condiciones para ejecutar o no el DAG. Con la regla de triggering por defecto, para que se ejecute una tarea todas las previas tienen que estar ejecutadas successfully. Si alguna de las tareas previas es skipped, entonces la tarea tambien se skippea  
 '''
 
 def _pick_erp_system(**context):
@@ -66,4 +66,4 @@ with DAG(
     fetch_weather >> clean_weather
     [join_erp, clean_weather] >> join_datasets
     join_datasets >> train_model >> deploy_model # Notese como estamos declarando que deploy_model se tiene que ejecutar cuando train_model se ejecute satisfactoriamente y ...
-    latest_only >> deploy_model # ... cuando latest_only sea tambien satisfactoria
+    latest_only >> deploy_model # ... cuando latest_only sea tambien satisfactoria. Si la tarea se skippea, no se cumple la trigger condition, y se skippea deploy_model

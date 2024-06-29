@@ -5,6 +5,9 @@ import airflow
 from airflow import DAG
 from airflow.decorators import task
 
+'''
+Demuestra como podemos usar una anotacion en una funcion python para convertirla en un operador python
+'''
 
 with DAG(
     dag_id="12_taskflow",

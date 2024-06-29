@@ -14,6 +14,9 @@ def _pick_erp_system(**context):
     else:
         return "fetch_sales_new"
 
+'''
+Demuestra como usar un operador condición ad-hoc, de los que se incluyen en la libreria de AIF. Estos siven para condiciones concretas
+'''
 
 with DAG(
     dag_id="07_condition_dag_op",

@@ -6,6 +6,9 @@ from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 
+'''
+xcoms es el object store incluido con AIF. Podemos pasar datos de una tarea a otra usando el xcom - solo se puede usar cuando el tamaño de la información que queremos intercambiar es moderado. El tamaño depende del motor de base de datos que usemos para definir el esquema de AIF - postgres, mysql, sqlite
+'''
 
 def _train_model(**context):
     model_id = str(uuid.uuid4())
