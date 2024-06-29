@@ -60,6 +60,17 @@ def _send_stats(email, **context):
     stats = pd.read_csv(context["templates_dict"]["stats_path"])
     email_stats(stats, email=email)
 
+'''
+op_kwargs vs templates_dict
+
+Ambas sirven para pasar parametros a Operador
+Ambas son un diccionario
+
+op_kwargs se desempaqueta al pasarla al operador, de modo que las keys se pasan como propiedades "separadas". templates_dict se pasa en el contexto como un diccionario
+
+Al llegar al execute del Operador los keys de op_kwargs y de templates_dict llegan por separado, pero con la diferencia de que los valores de templates_dict se utilizan para proporcionar un valor por defecto
+'''
+
 # Para que el calculo de estadisticas sea atomico, separamos del calculo el envio del email. Asi en caso de que falle el envio de email no se repite el calculo de estadisticas
 send_stats = PythonOperator(
     task_id="send_stats",

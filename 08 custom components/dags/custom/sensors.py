@@ -5,7 +5,7 @@ from airflow.utils.decorators import apply_defaults
 
 from custom.hooks import MovielensHook
 
-
+# para crear un sensor heredamos de BaseSensorOperator. Tendremos que implementar el metodo poke
 class MovielensRatingsSensor(BaseSensorOperator):
     """
     Sensor that waits for the Movielens API to have ratings for a time period.
@@ -17,9 +17,10 @@ class MovielensRatingsSensor(BaseSensorOperator):
         (Templated) end date of the time period to check for (exclusive).
         Expected format is YYYY-MM-DD (equal to Airflow's ds formats).
     """
-
+    # Valores que podemos pasar como un template jinja
     template_fields = ("_start_date", "_end_date")
-
+    
+    # Aplicamos los valores por defecto al Sensor 
     @apply_defaults
     def __init__(self, conn_id, start_date="{{ds}}", end_date="{{next_ds}}", **kwargs):
         super().__init__(**kwargs)
@@ -28,6 +29,7 @@ class MovielensRatingsSensor(BaseSensorOperator):
         self._end_date = end_date
 
     # pylint: disable=unused-argument,missing-docstring
+    # implementamos la lógica del sensor
     def poke(self, context):
         hook = MovielensHook(self._conn_id)
 
@@ -36,7 +38,7 @@ class MovielensRatingsSensor(BaseSensorOperator):
                 hook.get_ratings(
                     start_date=self._start_date, end_date=self._end_date, batch_size=1
                 )
-            )
+            ) #como obtenemos un generator podemos ir haciendo next para sacar los elementos uno a uno
             # If no StopIteration is raised, the request returned at least one record.
             # This means that there are records for the given period, which we indicate
             # to Airflow by returning True.
@@ -44,7 +46,7 @@ class MovielensRatingsSensor(BaseSensorOperator):
                 f"Found ratings for {self._start_date} to {self._end_date}, continuing!"
             )
             return True
-        except StopIteration:
+        except StopIteration: # ya no quedan elementos en el generator
             self.log.info(
                 f"Didn't find any ratings for {self._start_date} "
                 f"to {self._end_date}, waiting..."

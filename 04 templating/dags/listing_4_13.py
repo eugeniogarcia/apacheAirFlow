@@ -18,6 +18,16 @@ def _get_data(year, month, day, hour, output_path, **_):
     )
     request.urlretrieve(url, output_path)
 
+'''
+op_kwargs vs templates_dict
+
+Ambas sirven para pasar parametros a Operador
+Ambas son un diccionario
+
+op_kwargs se desempaqueta al pasarla al operador, de modo que las keys se pasan como propiedades "separadas". templates_dict se pasa en el contexto como un diccionario
+
+Al llegar al execute del Operador los keys de op_kwargs y de templates_dict llegan por separado, pero con la diferencia de que los valores de templates_dict se utilizan para proporcionar un valor por defecto
+'''
 
 get_data = PythonOperator(
     task_id="get_data",
