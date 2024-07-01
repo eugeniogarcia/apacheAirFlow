@@ -15,7 +15,11 @@ from airflowbook.operators.movielens_operator import (
     PostgresHook,
 )
 
+'''
+Otro ejemplo en el que se demuestra como utilizar fixtures y crear programáticamente un contenedor de docker para hacer el test
+'''
 
+# Creamos una fixture con scope modulo
 @pytest.fixture(scope="module")
 def postgres_credentials():
     PostgresCredentials = namedtuple("PostgresCredentials", ["username", "password"])
@@ -37,7 +41,7 @@ postgres = container(
     },
 )
 
-
+# Usamos dos fixtures por defecto, el tmp_path y mocker
 def test_movielens_operator(tmp_path: Path, mocker: MockFixture):
     mocker.patch.object(
         MovielensHook,
@@ -66,7 +70,13 @@ def test_movielens_operator(tmp_path: Path, mocker: MockFixture):
         ignore_ti_state=True,
     )
 
+''' 
+Usamos varias fixtures:
+- mocker. Es la fixture incluida por defecto al instala pytest-mock. Nos permite mockear metodos de clases
+- test_dag: es una fixture que hemos creado en el archivo conftest. Crear un DAG
+- postgres_credentials: es una fixture con scope modulo que hemos creado antes
 
+'''
 def test_movielens_to_postgres_operator(
     mocker: MockFixture, test_dag: DAG, postgres, postgres_credentials
 ):
@@ -106,6 +116,7 @@ def test_movielens_to_postgres_operator(
     row_count = pg_hook.get_first("SELECT COUNT(*) FROM movielens")[0]
     assert row_count == 0
 
+    # Usa el helper definido en conftest
     pytest.helpers.run_airflow_task(task, test_dag)
 
     row_count = pg_hook.get_first("SELECT COUNT(*) FROM movielens")[0]

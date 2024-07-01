@@ -5,7 +5,11 @@ from airflow.models import DAG, BaseOperator
 
 pytest_plugins = ["helpers_namespace"]
 
+'''
+Define elementos que queremos usar en todos los tests: fixtures y helpers
+'''
 
+# define una fixture
 @pytest.fixture
 def test_dag():
     return DAG(
@@ -15,6 +19,7 @@ def test_dag():
     )
 
 
+# define una funcion helper
 @pytest.helpers.register
 def run_airflow_task(task: BaseOperator, dag: DAG):
     dag.clear()

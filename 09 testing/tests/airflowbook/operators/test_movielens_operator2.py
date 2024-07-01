@@ -60,6 +60,7 @@ def test_movielens_to_postgres_operator(mocker, test_dag, postgres):
     row_count = pg_hook.get_first("SELECT COUNT(*) FROM movielens")[0]
     assert row_count == 0
 
+    # Usa el helper definido en conftest
     pytest.helpers.run_airflow_task(task, test_dag)
 
     row_count = pg_hook.get_first("SELECT COUNT(*) FROM movielens")[0]
