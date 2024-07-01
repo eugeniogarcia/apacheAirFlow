@@ -6,13 +6,20 @@ from airflowbook.operators.movielens_operator import (
     MovielensHook,
 )
 
+'''
+Demuestra como usar un mock
+'''
 
+# Pasamos como argumento mocker. En este argumento se inyectara nuestro modulo de mocking
 def test_movielenspopularityoperator(mocker):
+    # definimos el mock
     mock_get = mocker.patch.object(
-        MovielensHook,
-        "get_connection",
-        return_value=Connection(conn_id="test", login="airflow", password="airflow"),
+        MovielensHook, # objeto que mockeamos
+        "get_connection", # metodo que mockeamos
+        return_value=Connection(conn_id="test", login="airflow", password="airflow"), # valor que se devuelve
     )
+
+    # objeto del test
     task = MovielensPopularityOperator(
         task_id="test_id",
         conn_id="testconn",
@@ -22,7 +29,10 @@ def test_movielenspopularityoperator(mocker):
     )
     result = task.execute(context=None)
     assert len(result) == 5
+
+    # podemos comprobar si el mock efectivamente se ha llamado
     assert mock_get.call_count == 1
+    # podemos verificar que cuando se llamara el mock se le llamara con el argumento testconn
     mock_get.assert_called_with("testconn")
 
 

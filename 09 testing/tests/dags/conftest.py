@@ -4,7 +4,7 @@ import datetime
 import pytest
 from airflow import DAG
 
-
+# tmpdir es una fixture por defecto de pytest. Nos ofrece: "Provide a py.path.local object to a temporary directory which is unique to each test function; replaced by tmp_path."
 @pytest.fixture
 def test_dag(tmpdir):
     return DAG(

@@ -4,6 +4,11 @@ from pathlib import Path
 
 from airflowbook.operators.json_to_csv_operator import JsonToCsvOperator
 
+'''
+Demuestra como utilizar la fixture por defecto de pytest que nos ofrece la posibilidad de trabajar con el filesystem de forma temporal - filesystem que se elimina tras la ejecución del test.
+
+Para más información de las fixtures de pytest podemos consultar https://docs.pytest.org/en/6.2.x/fixture.html
+'''
 
 def test_json_to_csv_operator(tmp_path: Path):
     print(tmp_path.as_posix())
