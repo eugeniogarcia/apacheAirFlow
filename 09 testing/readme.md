@@ -9,5 +9,3 @@
 - test_json_to_csv_operator. Demuestra como usar la fixture por defecto que nos permite usar un filesytem temporal - podremos escribir y leer archivos de esta ruta, y cuando el caso de prueba/test function termine, el directorio temporal y sus contenidos se eliminan, de modo que podemos repetir el caso de prueba las veces que queramos
 
 - `test_movielens_operator.py`. Demuestra como emular sistemas externos usando docker (pytest-docker-tools) para ejecutar casos de prueba unitarios
-
-- `test_movielens_operator2.py`. 
