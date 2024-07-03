@@ -12,5 +12,5 @@ RUN chmod +x /usr/local/bin/fetch-weather
 # Tell docker which command to run when starting the container.
 ENTRYPOINT [ "/usr/local/bin/fetch-weather" ]
 
-# Tell docker which default arguments to include with the command.
+# argumentos por defecto sino indicamos alguno
 CMD [ "--help" ]
