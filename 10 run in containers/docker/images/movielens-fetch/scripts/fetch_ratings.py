@@ -8,10 +8,13 @@ import json
 import click
 import requests
 
+'''
+Demuestra como crear un CLI con python usando la libreria click
+'''
 
 logging.basicConfig(level=logging.INFO)
 
-
+# Declaramos parametros que el CLI aceptara. Su tipo, si son o no obligatorios, un valor por defecto, y una descripción
 @click.command()
 @click.option(
     "--start_date",
