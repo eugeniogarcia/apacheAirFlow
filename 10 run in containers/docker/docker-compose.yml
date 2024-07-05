@@ -30,7 +30,7 @@ services:
     networks:
       - airflow
   init:
-    image: docker.io/egsmartin/mi-airflow
+    image: docker.io/egsmartin/mi-airflow:latest
     container_name: chapter10_docker_init_1
     depends_on:
       - postgres
@@ -40,7 +40,7 @@ services:
     entrypoint: /bin/bash
     command: -c 'airflow db upgrade && sleep 5 && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email admin@example.org'
   webserver:
-    image: docker.io/egsmartin/mi-airflow
+    image: docker.io/egsmartin/mi-airflow:latest
     container_name: chapter10_docker_webserver_1
     restart: always
     depends_on:
@@ -54,7 +54,7 @@ services:
     environment: *airflow_environment
     command: webserver
   scheduler:
-    image: docker.io/egsmartin/mi-airflow
+    image: docker.io/egsmartin/mi-airflow:latest
     container_name: chapter10_docker_scheduler_1
     restart: always
     depends_on:
@@ -68,8 +68,7 @@ services:
     environment: *airflow_environment
     command: scheduler
   movielens:
-    build: ../../08 custom components/docker/movielens-api
-    image: docker.io/egsmartin/movielens-api
+    image: docker.io/egsmartin/movielens-api:latest
     container_name: chapter10_docker_movielens_1
     networks:
       - airflow
@@ -82,11 +81,11 @@ services:
   # These aren't actual services, but we include them to make sure that the
   # corresponding images are built by when pulling up docker-compose.
   movielens-fetch:
-    image: docker.io/egsmartin/movielens-fetch
+    image: docker.io/egsmartin/movielens-fetch:latest
     container_name: chapter10_docker_movielens-fetch_1
     restart: "no"
   movielens-rank:
-    image: docker.io/egsmartin/movielens-rank
+    image: docker.io/egsmartin/movielens-movielens-ranking:latest
     container_name: chapter10_docker_movielens-rank_1
     restart: "no"
 
