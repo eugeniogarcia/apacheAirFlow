@@ -30,11 +30,7 @@ services:
     networks:
       - airflow
   init:
-    build:
-      context: images/airflow-docker
-      args:
-        AIRFLOW_BASE_IMAGE: *airflow_image
-    image: manning-airflow/airflow-docker
+    image: docker.io/egsmartin/mi-airflow
     container_name: chapter10_docker_init_1
     depends_on:
       - postgres
@@ -44,11 +40,7 @@ services:
     entrypoint: /bin/bash
     command: -c 'airflow db upgrade && sleep 5 && airflow users create --username admin --password admin --firstname Anonymous --lastname Admin --role Admin --email admin@example.org'
   webserver:
-    build:
-      context: images/airflow-docker
-      args:
-        AIRFLOW_BASE_IMAGE: *airflow_image
-    image: manning-airflow/airflow-docker
+    image: docker.io/egsmartin/mi-airflow
     container_name: chapter10_docker_webserver_1
     restart: always
     depends_on:
@@ -62,11 +54,7 @@ services:
     environment: *airflow_environment
     command: webserver
   scheduler:
-    build:
-      context: images/airflow-docker
-      args:
-        AIRFLOW_BASE_IMAGE: *airflow_image
-    image: manning-airflow/airflow-docker
+    image: docker.io/egsmartin/mi-airflow
     container_name: chapter10_docker_scheduler_1
     restart: always
     depends_on:
@@ -80,8 +68,8 @@ services:
     environment: *airflow_environment
     command: scheduler
   movielens:
-    build: ../../chapter08/docker/movielens-api
-    image: manning-airflow/movielens-api
+    build: ../../08 custom components/docker/movielens-api
+    image: docker.io/egsmartin/movielens-api
     container_name: chapter10_docker_movielens_1
     networks:
       - airflow
@@ -94,13 +82,11 @@ services:
   # These aren't actual services, but we include them to make sure that the
   # corresponding images are built by when pulling up docker-compose.
   movielens-fetch:
-    build: images/movielens-fetch
-    image: manning-airflow/movielens-fetch
+    image: docker.io/egsmartin/movielens-fetch
     container_name: chapter10_docker_movielens-fetch_1
     restart: "no"
   movielens-rank:
-    build: images/movielens-rank
-    image: manning-airflow/movielens-rank
+    image: docker.io/egsmartin/movielens-rank
     container_name: chapter10_docker_movielens-rank_1
     restart: "no"
 

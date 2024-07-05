@@ -13,6 +13,7 @@ with DAG(
     schedule_interval="@daily",
 ) as dag:
 
+    # arrancamos un contenedor en base a una imagen, especificando unos comandos. El dag no se indica explicitamente, pero estamos en un contexto, asi que se indica de forma indirecta
     fetch_ratings = DockerOperator(
         task_id="fetch_ratings",
         image="manning-airflow/movielens-fetch",
@@ -36,6 +37,7 @@ with DAG(
         volumes=["/tmp/airflow/data:/data"],
     )
 
+    # Instanciamos una segunda imagen
     rank_movies = DockerOperator(
         task_id="rank_movies",
         image="manning-airflow/movielens-rank",
@@ -49,4 +51,4 @@ with DAG(
         volumes=["/tmp/airflow/data:/data"],
     )
 
-    fetch_ratings >> rank_movies
+    fetch_ratings >> rank_movies # como siempre
